@@ -27,18 +27,25 @@ namespace Tarea2AnalisisAlgoritmosPorConsola
             this.dimension = 9;
             this.dimensioncaja = 3;
 
-            int cantidad = 4;
+            int cantidad = 10;
 
             for (int i = 1; i <= cantidad; i++)
             {
                 Console.WriteLine();
                 Console.WriteLine("Intento " + i);
                 Console.WriteLine();
-                llenarConCeros();
-                llenarDiagonales();
-                llenarResto(0, 3);
-                imprimeTablero();
+                muestra();
                 casillasInversas();
+                if(cantSoluciones(0, 0, 0) == 1)
+                {
+                    imprimeTablero(); //Tablero con ceros
+                    if (volverALlenar(0, 0))
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Proceso Exitoso");
+                        Console.WriteLine();
+                    }
+                }
                 imprimeTablero();
             }
         }
@@ -55,8 +62,7 @@ namespace Tarea2AnalisisAlgoritmosPorConsola
         {
             int cantidadEnBlanco = 20;
             Random r = new Random();
-            int i, j, k, inversoI, inversoJ, inicioI=0, inicioJ=0, cont=0;
-            int contadorSoluciones = 0;
+            int i, j, k, inversoI, inversoJ;
 
             for (k = 0; k < cantidadEnBlanco; k++)
             {
@@ -71,30 +77,29 @@ namespace Tarea2AnalisisAlgoritmosPorConsola
 
                 //Console.Write("Posición (" + i + ", " + j +")\n");
             }
+            // Console.WriteLine("La cantidad de comparaciones fueron : " + cont); Muestra la cantidad de comparaciones, en el peor caso debería ser 
+        }
 
-            // Console.WriteLine("La cantidad de comparaciones fueron : " + cont); Muestra la cantidad de comparaciones, en el peor caso debería ser 40
-            imprimeTablero();
-
-            for (int l = 0; l < this.dimension; l++)
+        private int cantSoluciones(int i, int j, int contador)
+        {
+            if(i == this.dimension)
             {
-                for (int m = 0; m < this.dimension; m++)
+                i = 0;
+                if (++j == this.dimension) return 1 + contador;
+            }
+            if (this.matriz[i, j] != 0) return cantSoluciones(i + 1, j, contador);
+
+            for (int num = 1; (num <= this.dimension) && (contador < 2); num++)
+            {
+                if(sePuede(i,j,num))
                 {
-                    if(this.matriz[l, m] == 0 && cont == 0)
-                    {
-                        inicioI = l;
-                        inicioJ = m;
-                        cont = cont + 1;
-                    }
+                    this.matriz[i, j] = num;
+
+                    contador = cantSoluciones(i + 1, j, contador);
                 }
             }
-
-            if (volverALlenar(inicioI, inicioJ))
-            {
-                Console.WriteLine();
-                Console.WriteLine("Proceso Exitoso");
-                Console.WriteLine();
-            }
-
+            this.matriz[i, j] = 0;
+            return contador;
         }
 
         private void llenarConCeros()
