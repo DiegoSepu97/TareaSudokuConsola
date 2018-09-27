@@ -27,27 +27,53 @@ namespace Tarea2AnalisisAlgoritmosPorConsola
             this.dimension = 9;
             this.dimensioncaja = 3;
 
-            int cantidad = 10;
+            int cantidadfallos = 0;
+
+            int cantidad = 1;
 
             for (int i = 1; i <= cantidad; i++)
             {
                 Console.WriteLine();
                 Console.WriteLine("Intento " + i);
                 Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("SUDOKU COMPLETO");
+                Console.WriteLine();
                 muestra();
                 casillasInversas();
-                if(cantSoluciones(0, 0, 0) == 1)
+                if (cantSoluciones(0, 0, 0) == 1)
                 {
+                    Console.WriteLine();
+                    Console.WriteLine("SUDOKU ENMASCARADO");
+                    Console.WriteLine();
                     imprimeTablero(); //Tablero con ceros
                     if (volverALlenar(0, 0))
                     {
                         Console.WriteLine();
-                        Console.WriteLine("Proceso Exitoso");
+                        Console.WriteLine("PROCESO TERMINADO: MOSTRANDO SUDOKU LLENADO");
                         Console.WriteLine();
                     }
                 }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("EL SUDOKU ENMASCARADO GENERADO NO TIENE SOLUCIÓN ÚNICA");
+                    Console.WriteLine();
+                    cantidadfallos++;
+                }
+                    
                 imprimeTablero();
+                Console.WriteLine("##################################################");
+                Console.WriteLine("##################################################");
+                Console.WriteLine("##################################################");
+                Console.WriteLine();
             }
+
+            Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+            Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+            Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+            Console.WriteLine();
+            Console.WriteLine("Cantidad de fallos: " + cantidadfallos);
         }
 
         private void muestra()
